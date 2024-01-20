@@ -113,11 +113,11 @@ void FLED::run_AAMED_WithoutCanny(Mat Img_G)
 
 	//t1 = cv::getTickCount();
 	uchar *_imgCanny = (uchar*)imgCanny.data;
-	//±ßÔµÂÖÀª²éÕÒ£¬¸öÊýÐ¡ÓÚT_edge_num(²ÎÊý×ÔÊÊÓ¦)½«»á±»ÈÓµô
+	//ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò£ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½T_edge_num(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦)ï¿½ï¿½ï¿½á±»ï¿½Óµï¿½
 	findContours(_imgCanny);
 
 
-	BoldEdge(_imgCanny, edgeContours); //½«Í¼Ïñ½øÐÐ¼Ó´Ö£¬·½±ã²éÕÒ±ßÔµµã
+	BoldEdge(_imgCanny, edgeContours); //ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ð¼Ó´Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ï¿½Ôµï¿½ï¿½
 #ifdef DETAIL_BREAKDOWN
 	t_preprocess = (cv::getTickCount() - tmp_st) * 1000 / cv::getTickFrequency();
 
@@ -156,9 +156,9 @@ void FLED::run_AAMED_WithoutCanny(Mat Img_G)
 #endif
 
 
-	SortArcs(FSA_ArcContours); // Õë¶Ô»¡¶Î¸öÊý½øÐÐÅÅÐò
+	SortArcs(FSA_ArcContours); // ï¿½ï¿½Ô»ï¿½ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	CreateArcSearchRegion(FSA_ArcContours); //¼ÆËãËùÓÐ»¡¶ÎµÄËÑË÷Çø¼ä
+	CreateArcSearchRegion(FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	int fsa_Arcs = int(FSA_ArcContours.size());
 	if (fsa_Arcs == 0)
@@ -184,7 +184,7 @@ void FLED::run_AAMED_WithoutCanny(Mat Img_G)
 
 
 
-	GetArcMat(ArcFitMat, FSA_ArcContours); //¼ÆËãÃ¿¸ö»¡¶ÎµÄÄâºÏ¾ØÕó
+	GetArcMat(ArcFitMat, FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½
 
 
 	_arc_grouped_label.clear();
@@ -199,12 +199,12 @@ void FLED::run_AAMED_WithoutCanny(Mat Img_G)
 		if (_arc_grouped_label[root_idx] != 0)
 			continue;
 		//t1 = cv::getTickCount();
-		search_group[0].clear(), search_group[1].clear();//Çå¿ÕÉÏÒ»×âÊý¾Ýµã
-		search_arcMats[0].clear(), search_arcMats[1].clear(); //Çå¿ÕÉÏÒ»×é¾ØÕóÄâºÏÊý¾Ýµã
+		search_group[0].clear(), search_group[1].clear();//ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
+		search_arcMats[0].clear(), search_arcMats[1].clear(); //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
 		searched.clean();
 
-		temp.push_back(root_idx);//¼ÓÈë¸ù½Úµã»¡¶Î
-		*visited[root_idx] = 1; //µ±Ç°½Úµã·ÃÎÊ¹ý
+		temp.push_back(root_idx);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµã»¡ï¿½ï¿½
+		*visited[root_idx] = 1; //ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ê¹ï¿½
 		memcpy(fitArcTemp.val, ArcFitMat[root_idx].val, sizeof(double)*MAT_NUMBER);
 
 		//t1 = cv::getTickCount();
@@ -246,6 +246,93 @@ void FLED::run_AAMED_WithoutCanny(Mat Img_G)
 
 
 }
+void FLED::run_AAMED_WithoutImage(Mat Img_G, vector<Point> &edgePoints)
+{
+
+	initFrame();
+
+	iROWS = Img_G.rows; iCOLS = Img_G.cols;
+
+	imgCanny = Img_G.clone();
+	uchar *_imgCanny = (uchar*)imgCanny.data;
+	// findContours(_imgCanny);
+	// oneContour.push_back(Point(move_x, move_y));
+
+
+	// Arc Segmentation
+	const int edgeContoursNum = int(edgeContours.size());
+	for (int i = 0; i < edgeContoursNum; i++)
+	{
+		adaptApproxPolyDP(edgeContours[i], oneContour);
+		if (oneContour.size() < MIN_DP_CONTOUR_NUM)
+			continue;
+		dpContours.push_back(oneContour);
+	}
+
+	const int dpContoursNum = int(dpContours.size());
+	for (int i = 0; i < dpContoursNum; i++)
+	{
+		FSA_Segment(dpContours[i]);
+	}
+
+	SortArcs(FSA_ArcContours); // ï¿½ï¿½Ô»ï¿½ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	CreateArcSearchRegion(FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	int fsa_Arcs = int(FSA_ArcContours.size());
+	if (fsa_Arcs == 0)
+		return;
+	getArcs_KDTrees(FSA_ArcContours);
+
+
+	Arcs_Grouping(FSA_ArcContours);
+
+	const char *_linkMatrix = LinkMatrix.GetDataPoint();
+	getlinkArcs(_linkMatrix, fsa_Arcs);
+
+	visited.Update(fsa_Arcs);
+	searched.Update(fsa_Arcs);
+
+	GetArcMat(ArcFitMat, FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½
+
+	_arc_grouped_label.clear();
+	_arc_grouped_label.resize(fsa_Arcs, 0);
+
+	for (int root_idx = 0; root_idx < fsa_Arcs; root_idx++)
+	{
+		if (FSA_ArcContours[root_idx].size() <= 3)
+			continue;
+
+		if (_arc_grouped_label[root_idx] != 0)
+			continue;
+		search_group[0].clear(), search_group[1].clear();//ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
+		search_arcMats[0].clear(), search_arcMats[1].clear(); //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
+		searched.clean();
+
+		temp.push_back(root_idx);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµã»¡ï¿½ï¿½
+		*visited[root_idx] = 1; //ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ê¹ï¿½
+		memcpy(fitArcTemp.val, ArcFitMat[root_idx].val, sizeof(double)*MAT_NUMBER);
+
+		PosteriorArcsSearch2(root_idx);
+
+		temp.push_back(root_idx);
+		*visited[root_idx] = 1;
+		AnteriorArcsSearch(root_idx);
+
+		sortCombine(fitComb_LR, search_arcMats, search_group);
+		BiDirectionVerification(fitComb_LR, search_arcMats, search_group, _arc_grouped_label);
+	}
+
+
+#if SELECT_CLUSTER_METHOD == OUR_CLUSTER_METHOD
+	EllipseNonMaximumSuppression(detEllipses, detEllipseScore, 0.7);
+#elif SELECT_CLUSTER_METHOD == PRASAD_CLUSTER_METHOD
+	ClusterEllipses(detEllipses, detEllipseScore);
+#endif
+	asrs.clear();
+
+}
+
 void FLED::run_FLED(Mat Img_G)
 {
 	// Pre-Processing
@@ -266,26 +353,26 @@ void FLED::run_FLED(Mat Img_G)
 
 	iROWS = Img_G.rows; iCOLS = Img_G.cols;
 
-	// ---------------- opencv°æ±¾Canny-----------
-	//Í¼ÏñÄ£ºýµÄãÐÖµÐèÒª×ÔÊÊÓ¦£¬Õâ¸öÓ¦¸ÃÓëÍ¼ÏñÖÊÁ¿ÓÐ¹Ø
+	// ---------------- opencvï¿½æ±¾Canny-----------
+	//Í¼ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½
 
 	const double var = 0.6 / 0.8, sprec = 3;
 	int L = int(var*sqrt(2 * sprec*log(10.0))) + 1;
 	GaussianBlur(Img_G, Img_G, cv::Size(2 * L + 1, 2 * L + 1), var);
 	//cv::medianBlur(Img_G, Img_G, 3);
 
-	//Canny£¬Á½¸ö²ÎÊýÒÑ×ÔÊÊÓ¦
+	//Cannyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦
 	int low, high;
 	calCannyThreshold(Img_G, low, high);
 	Canny(Img_G, imgCanny, low, high);
 
 	//t1 = cv::getTickCount();
 	uchar *_imgCanny = (uchar*)imgCanny.data;
-	//±ßÔµÂÖÀª²éÕÒ£¬¸öÊýÐ¡ÓÚT_edge_num(²ÎÊý×ÔÊÊÓ¦)½«»á±»ÈÓµô
+	//ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò£ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½T_edge_num(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦)ï¿½ï¿½ï¿½á±»ï¿½Óµï¿½
 	findContours(_imgCanny);
 
 
-	BoldEdge(_imgCanny, edgeContours); //½«Í¼Ïñ½øÐÐ¼Ó´Ö£¬·½±ã²éÕÒ±ßÔµµã
+	BoldEdge(_imgCanny, edgeContours); //ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ð¼Ó´Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ï¿½Ôµï¿½ï¿½
 
 #ifdef DETAIL_BREAKDOWN
 	t_preprocess = (cv::getTickCount() - tmp_st) * 1000 / cv::getTickFrequency();
@@ -324,9 +411,9 @@ void FLED::run_FLED(Mat Img_G)
 	tmp_st = cv::getTickCount();
 #endif
 
-	SortArcs(FSA_ArcContours); // Õë¶Ô»¡¶Î¸öÊý½øÐÐÅÅÐò
+	SortArcs(FSA_ArcContours); // ï¿½ï¿½Ô»ï¿½ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	CreateArcSearchRegion(FSA_ArcContours); //¼ÆËãËùÓÐ»¡¶ÎµÄËÑË÷Çø¼ä
+	CreateArcSearchRegion(FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	int fsa_Arcs = int(FSA_ArcContours.size());
 	if (fsa_Arcs == 0)
@@ -352,7 +439,7 @@ void FLED::run_FLED(Mat Img_G)
 
 
 
-	GetArcMat(ArcFitMat, FSA_ArcContours); //¼ÆËãÃ¿¸ö»¡¶ÎµÄÄâºÏ¾ØÕó
+	GetArcMat(ArcFitMat, FSA_ArcContours); //ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½
 
 
 	_arc_grouped_label.clear();
@@ -367,12 +454,12 @@ void FLED::run_FLED(Mat Img_G)
 		if (_arc_grouped_label[root_idx] != 0)
 			continue;
 		//t1 = cv::getTickCount();
-		search_group[0].clear(), search_group[1].clear();//Çå¿ÕÉÏÒ»×âÊý¾Ýµã
-		search_arcMats[0].clear(), search_arcMats[1].clear(); //Çå¿ÕÉÏÒ»×é¾ØÕóÄâºÏÊý¾Ýµã
+		search_group[0].clear(), search_group[1].clear();//ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
+		search_arcMats[0].clear(), search_arcMats[1].clear(); //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½
 		searched.clean();
 
-		temp.push_back(root_idx);//¼ÓÈë¸ù½Úµã»¡¶Î
-		*visited[root_idx] = 1; //µ±Ç°½Úµã·ÃÎÊ¹ý
+		temp.push_back(root_idx);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµã»¡ï¿½ï¿½
+		*visited[root_idx] = 1; //ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ê¹ï¿½
 		memcpy(fitArcTemp.val, ArcFitMat[root_idx].val, sizeof(double)*MAT_NUMBER);
 
 		//t1 = cv::getTickCount();
@@ -457,11 +544,11 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 	unsigned char distType = 0x00;
 	Point vecFeature[8];
 
-	LinkMatrix.Update(fsaarcs_num*fsaarcs_num);// ¸üÐÂÁÚ½Ó¾ØÕó¸öÊý
+	LinkMatrix.Update(fsaarcs_num*fsaarcs_num);// ï¿½ï¿½ï¿½ï¿½ï¿½Ú½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	char* _LinkMatrix = LinkMatrix.GetDataPoint();
 
 	int T_ij, T_ji;
-	Point *_vec_data_i = NULL, *_vec_data_j = NULL; //»ñÈ¡vectorµÄÊý¾ÝÖ¸Õë
+	Point *_vec_data_i = NULL, *_vec_data_j = NULL; //ï¿½ï¿½È¡vectorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
 
 	// 1-25 Add
@@ -480,13 +567,13 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 
 		//asr1.create(l1[0], l1[1], l1[2], l1[3]); // Create Search Region, Modification of Prasad
 		_asr1 = _asrs + i;
-		vecFeature[0].x = l1[1]->x - l1[0]->x; vecFeature[0].y = l1[1]->y - l1[0]->y; //A0¡úA1
+		vecFeature[0].x = l1[1]->x - l1[0]->x; vecFeature[0].y = l1[1]->y - l1[0]->y; //A0ï¿½ï¿½A1
 		vecFeature[1].x = l1[3]->x - l1[2]->x; vecFeature[1].y = l1[3]->y - l1[2]->y; //Aend-1Aend
 		vecFeature[2].x = l1[3]->x - l1[0]->x; vecFeature[2].y = l1[3]->y - l1[0]->y;
 
 		dist_l = abs(l1[0]->x - l1[3]->x) + abs(l1[0]->y - l1[3]->y); //KD-Tree Search Radius.
 		query_arcs[0] = l1[3]->x; query_arcs[1] = l1[3]->y; // KD-Tree Search root.
-		//ÀûÓÃkdÊ÷£¬ËÑË÷Âú×ã¾àÀëÔ¼ÊøµÄµã
+		//ï¿½ï¿½ï¿½ï¿½kdï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Äµï¿½
 		searchNum = kdTree_Arcs.radiusSearch(query_arcs, indices_arcs, dist_arcs, dist_l, maxArcs);
 		//if (i == 0)
 		//{
@@ -516,12 +603,12 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 		for (int j = 0; j < searchNum; j++)
 		{
 			distType = FLED_GROUPING_IBmA1_IAnB1;
-			findIdx = _indices_arcs[j];// ÕÒµ½µÄ»¡¶Î±àºÅ
-			_linkIdx = i*fsaarcs_num + findIdx; //»ñÈ¡ÁÚ½Ó¾ØÕóµÄ±àºÅ
+			findIdx = _indices_arcs[j];// ï¿½Òµï¿½ï¿½Ä»ï¿½ï¿½Î±ï¿½ï¿½
+			_linkIdx = i*fsaarcs_num + findIdx; //ï¿½ï¿½È¡ï¿½Ú½Ó¾ï¿½ï¿½ï¿½Ä±ï¿½ï¿½
 			if (_LinkMatrix[_linkIdx] != 0)
 				continue;
 			int findArcNum = fsaarcs[findIdx].size();
-			_vec_data_j = fsaarcs[findIdx].data();   //»ñÈ¡±»ËÑË÷µÄ»¡¶ÎÖ¸Õë
+			_vec_data_j = fsaarcs[findIdx].data();   //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
 			l2[0] = _vec_data_j;                   // A^{j}_1
 			l2[1] = _vec_data_j + 1;               // A^{j}_2
@@ -544,7 +631,7 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 
 			switch (distType)
 			{
-			case FLED_GROUPING_FBmA1_FAnB1:// ËÑË÷µãÓëÎ²µã¿í¶È¶¼½ÏÔ¶
+			case FLED_GROUPING_FBmA1_FAnB1:// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½Ô¶
 			{
 				//group_res = CASE_1(&asr1, &asr2);
 				group_res = CASE_1(_asr1, _asr2);
@@ -553,19 +640,19 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 				//group_res = Group4FAnB1_FBmA1(vecFeature, l1, l2, &asr1, &asr2);
 				break;
 			}
-			case FLED_GROUPING_FBmA1_CAnB1:// ËÑË÷µã½Ï½ü£¬Î²µã½ÏÔ¶
+			case FLED_GROUPING_FBmA1_CAnB1:// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½Ô¶
 			{
 				group_res = Group4CAnB1_FBmA1(vecFeature, l1, l2);
 				//case_stat[1]++;
 				break;
 			}
-			case FLED_GROUPING_CBmA1_FAnB1:// ËÑË÷µã½ÏÔ¶£¬Î²µã½Ï½ü
+			case FLED_GROUPING_CBmA1_FAnB1:// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½Î²ï¿½ï¿½Ï½ï¿½
 			{
 				group_res = Group4FAnB1_CBmA1(vecFeature, l1, l2);
 				//case_stat[2]++;
 				break;
 			}
-			case FLED_GROUPING_CBmA1_CAnB1: // ËÑË÷µãÓëÎ²µã¿í¶È¶¼½Ï½ü
+			case FLED_GROUPING_CBmA1_CAnB1: // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½Ï½ï¿½
 			{
 				if (findIdx == i)
 				{
@@ -589,7 +676,7 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 			//	cout << group_res << endl;
 			//if (i == 32 && findIdx == 25)
 			//	cout << group_res << endl;
-			if (findIdx == i&&group_res == -1) //Èô»¡¶Îi²»ÄÜ¸ú×Ô¼ºÏàÁ¬£¬ÔòÕâ¸ö»¡¶Î²»¿ÉÄÜ¸úÆäÓàµÄÏàÁ¬
+			if (findIdx == i&&group_res == -1) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½Ü¸ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
 				continue;
 			}
@@ -598,7 +685,7 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 			_LinkMatrix[_linkIdx] = group_res;
 			if (group_res == -1)
 				_LinkMatrix[findIdx*fsaarcs_num + i] = -1;
-			//if (findIdx == i&&group_res==-1) //Èô»¡¶Îi²»ÄÜ¸ú×Ô¼ºÏàÁ¬£¬ÔòÕâ¸ö»¡¶Î²»¿ÉÄÜ¸úÆäÓàµÄÏàÁ¬
+			//if (findIdx == i&&group_res==-1) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½Ü¸ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			//{
 			//	for (int j = 0; j < fsaarcs_num; j++)
 			//	{
@@ -614,7 +701,7 @@ void FLED::Arcs_Grouping(vector< vector<Point> > &fsaarcs)
 void FLED::getlinkArcs(const char *_linkMatrix, int arc_num)
 {
 	lA.resize(arc_num);
-	//²éÕÒµÚi¸ö»¡¶ÎÏàÁ¬µÄ»¡¶ÎºÍ²»ÏàÁ¬µÄ
+	//ï¿½ï¿½ï¿½Òµï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ÎºÍ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < arc_num; i++)
 	{
 		//if (i == 25)
@@ -627,9 +714,9 @@ void FLED::getlinkArcs(const char *_linkMatrix, int arc_num)
 			//	cout << "Begin ERROR" << endl;
 			//if (i == 25 && j == 32)
 			//	cout << int(_linkMatrix[idx + j]) << endl;
-			if (_linkMatrix[idx + j] == 1) // i ÓëjÏàÁ¬£¬ÔòÁ¬½Ó
+			if (_linkMatrix[idx + j] == 1) // i ï¿½ï¿½jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				lA[i].idx_linking.push_back(j);
-			else if (_linkMatrix[idx + j] == -1) //iÓëj²»Á¬£¬Ôò²»Á¬
+			else if (_linkMatrix[idx + j] == -1) //iï¿½ï¿½jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				lA[i].idx_notlink.push_back(j);
 			if (_linkMatrix[j*arc_num + i] == 1)
 				lA[i].idx_linked.push_back(j);
@@ -683,7 +770,7 @@ bool FLED::FittingConstraint(double *_linkingMat, double *_linkedMat, cv::Rotate
 	//fitnum++;
 	//sum_time += (t2 - t1) * 1000 / cv::getTickFrequency();
 
-	// Some obviously cases: ÎÞ·¨ÄâºÏ³öÍÖÔ²£¬ÍÖÔ²³ß´ç´óÓÚÍ¼Ïñ³ß´ç£¬Ô²ÐÄÔÚÍ¼ÏñÍâ
+	// Some obviously cases: ï¿½Þ·ï¿½ï¿½ï¿½Ï³ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ß´ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ß´ç£¬Ô²ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
 	if (ellipse_error < 0)
 		return false;
 	if (fitres.center.x < 0 || fitres.center.x >= iROWS || fitres.center.y<0 || fitres.center.y>iCOLS)
@@ -785,7 +872,7 @@ void FLED::ElliFit(double *data, double &error, cv::RotatedRect &res)
 		else
 			rp[4] = -CV_PI / 4;
 	}
-	//ÖÁ´ËÄâºÏ³öÀ´µÄ²ÎÊýÐÅÏ¢ÊÇÒÔ×óÉÏ½Ç0,0Î»ÖÃÎªÔ­µã£¬rowÎªxÖá£¬colÎªyÖáÎª»ù×¼µÄ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï³ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½0,0Î»ï¿½ï¿½ÎªÔ­ï¿½ã£¬rowÎªxï¿½á£¬colÎªyï¿½ï¿½Îªï¿½ï¿½×¼ï¿½ï¿½
 	a1p = cos(rp[4])*_dls_X[3] + sin(rp[4])*_dls_X[4];
 	a2p = -sin(rp[4])*_dls_X[3] + cos(rp[4])*_dls_X[4];
 	a11p = _dls_X[0] + tan(rp[4])*_dls_X[1];
@@ -913,7 +1000,7 @@ void FLED::fitEllipse(double * data, double & error, cv::RotatedRect &res)
 		else
 			rp[4] = -CV_PI / 4;
 	}
-	//ÖÁ´ËÄâºÏ³öÀ´µÄ²ÎÊýÐÅÏ¢ÊÇÒÔ×óÉÏ½Ç0,0Î»ÖÃÎªÔ­µã£¬rowÎªxÖá£¬colÎªyÖáÎª»ù×¼µÄ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï³ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½0,0Î»ï¿½ï¿½ÎªÔ­ï¿½ã£¬rowÎªxï¿½á£¬colÎªyï¿½ï¿½Îªï¿½ï¿½×¼ï¿½ï¿½
 	a1p = cos(rp[4])*_dls_X[3] + sin(rp[4])*_dls_X[4];
 	a2p = -sin(rp[4])*_dls_X[3] + cos(rp[4])*_dls_X[4];
 	a11p = _dls_X[0] + tan(rp[4])*_dls_X[1];

@@ -55,6 +55,8 @@ public:
     bool checkInputImage(int rows, int cols);
 	void run_FLED(Mat Img_G);
 	void run_AAMED_WithoutCanny(Mat Img_G);
+	// run_AAMED_WithoutImage takes in a set of points
+	void run_AAMED_WithoutImage(Mat Img_G, vector<Point> &edgePoints);
 public:// Draw Data and Write Information Functions
 	void drawEdgeContours();
 	void drawDPContours();
@@ -75,6 +77,17 @@ public: // The public functions that used for Python.
 	{
 		Mat Img_G(irows, icols, CV_8UC1, _img_G);
 		run_FLED(Img_G);
+		return detEllipses.size();
+	}
+	int run_AAMED_WithoutImage(unsigned char* _img_G, int irows, int icols, unsigned char* _edgePoints, int edgePointsNum)
+	{
+		Mat Img_G(irows, icols, CV_8UC1, _img_G);
+		vector<Point> edgePoints;
+		for (int i = 0; i < edgePointsNum; i++)
+		{
+			edgePoints.push_back(Point(_edgePoints[i * 2], _edgePoints[i * 2 + 1]));
+		}
+		run_AAMED_WithoutImage(Img_G, edgePoints);
 		return detEllipses.size();
 	}
 	void UpdateResults(float* _data)

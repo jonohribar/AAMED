@@ -9,7 +9,7 @@ from Cython.Distutils import build_ext
 # Python as the one installed from source.
 # 
 # Base folder of OpenCV installation. E.g. "D:/opencv"
-opencv_root = ""
+opencv_root = "D:/c/lib"
 
 
 # Check if OpenCV is installed
@@ -25,17 +25,18 @@ if opencv_root:
     import subprocess
     import shutil
 
-    opencv_bin = Path(opencv_root) / "build/x64/vc14/bin"
-
+    opencv_bin = Path(opencv_root) / "install/opencv/x64/vc17/bin"
+    print(f"Looking for {str(opencv_bin / 'opencv_version.exe')}")
     opencv_src_version = subprocess.check_output(
         [str(opencv_bin / "opencv_version.exe")]
-    ).decode().strip().replace(".", "")
+    ).decode().strip().replace(".", "").replace("-dev", "")
 
     if version != opencv_src_version:
         sys.exit(f"Version mismatch: Python OpenCV ({version}) and installed OpenCV ({opencv_src_version})")
 
-    opencv_include = Path(opencv_root) / "build/include"
-    opencv_lib_dirs = Path(opencv_root) / "build/x64/vc14/lib"
+    # opencv_include = Path(opencv_root) / "opencv/include"
+    opencv_include = Path(opencv_root) / "install/opencv/include"
+    opencv_lib_dirs = Path(opencv_root) / "install/opencv/x64/vc17/lib"
     extra_compile_args = ["/TP"]
     libraries = [f"opencv_world{version}"]
 

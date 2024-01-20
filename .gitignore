@@ -1,11 +1,10 @@
-/python/*.cpp
-/python/*.pyd
-/python/*.so
-/python/build
-/labeltool/*.mexw64
-/measuretool/MeasureTools/*.mexw64
-/measuretool/*.mat
+# Byte-compiled / optimized 
+__pycache__/
+*.pyc
+*.pyd
 
-*.mexw64
-
-.vscode
+# Ignore the generated files
+_*/
+cmake-build/
+build/
+pyaamed.egg-info/
